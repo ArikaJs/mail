@@ -1,0 +1,49 @@
+{
+    "name": "@arikajs/mail",
+    "version": "0.1.0",
+    "description": "Email delivery system for the ArikaJS framework.",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "build:tests": "tsc -p tsconfig.test.json",
+        "clean": "rm -rf dist",
+        "prepare": "npm run build",
+        "test": "npm run build && npm run build:tests && node scripts/fix-test-imports.js && node --test 'dist/tests/**/*.test.js'",
+        "test:watch": "npm run build && npm run build:tests && node --test --watch 'dist/tests/**/*.test.js'"
+    },
+    "files": [
+        "dist"
+    ],
+    "keywords": [
+        "arika",
+        "arika-js",
+        "framework",
+        "mail",
+        "email",
+        "smtp",
+        "mailer",
+        "mailable"
+    ],
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/arikajs/mail.git"
+    },
+    "bugs": {
+        "url": "https://github.com/arikajs/mail/issues"
+    },
+    "homepage": "https://github.com/arikajs/mail#readme",
+    "dependencies": {
+        "nodemailer": "^6.9.8"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.24",
+        "@types/nodemailer": "^6.4.14",
+        "typescript": "^5.3.3"
+    },
+    "author": "Prakash Tank"
+}

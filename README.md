@@ -1,0 +1,279 @@
+## Arika Mail
+
+`@arikajs/mail` is the email delivery system for the ArikaJS framework.
+
+It provides a driver-based, configurable mailer with support for templated emails, attachments, and queue-ready delivery — inspired by Laravel Mail but built natively for Node.js and TypeScript.
+
+This package allows applications to send emails without coupling to a specific transport.
+
+---
+
+## ✨ Features
+
+- **Multiple mailers**: Configure different mail transports (SMTP)
+- **Driver-based transport system**: Pluggable email backends
+- **Class-based Mailables**: Reusable email classes
+- **Templated emails**: Using `@arikajs/view` for rendering
+- **Attachments**: Via `@arikajs/storage` integration
+- **Plain text & HTML emails**: Support for both formats
+- **Queue-ready architecture**: Designed for async delivery
+- **TypeScript-first**: Full type safety with JavaScript support
+
+---
+
+## 📦 Installation
+
+```bash
+npm install @arikajs/mail
+# or
+yarn add @arikajs/mail
+# or
+pnpm add @arikajs/mail
+```
+
+---
+
+## 🚀 Quick Start
+
+### Sending a Basic Email
+
+```ts
+import { Mail } from '@arikajs/mail';
+
+await Mail.to('user@example.com')
+  .subject('Welcome')
+  .text('Welcome to ArikaJS!')
+  .send();
+```
+
+---
+
+## 📬 Using Email Templates
+
+```ts
+await Mail.to('user@example.com')
+  .subject('Welcome')
+  .view('emails.welcome', { user })
+  .send();
+```
+
+Templates are rendered using `@arikajs/view`.
+
+---
+
+## ✉️ Mailables (Recommended)
+
+Mailables provide a clean, reusable way to define emails.
+
+```ts
+import { Mailable } from '@arikajs/mail';
+
+export class WelcomeMail extends Mailable {
+  constructor(private user: any) {
+    super();
+  }
+
+  build() {
+    return this
+      .subject('Welcome to ArikaJS')
+      .view('emails.welcome', { user: this.user });
+  }
+}
+```
+
+**Sending a mailable:**
+
+```ts
+await Mail.to(user.email).send(new WelcomeMail(user));
+```
+
+---
+
+## 📎 Attachments
+
+Attach files using Arika Storage:
+
+```ts
+await Mail.to('user@example.com')
+  .subject('Invoice')
+  .attach('invoices/2024.pdf')
+  .send();
+```
+
+---
+
+## ⚙️ Configuration
+
+Mail configuration is defined via the application config:
+
+```ts
+export default {
+  default: 'smtp',
+
+  mailers: {
+    smtp: {
+      transport: 'smtp',
+      host: 'smtp.mailtrap.io',
+      port: 587,
+      username: 'user',
+      password: 'secret',
+      encryption: 'tls',
+      from: {
+        address: 'no-reply@example.com',
+        name: 'Arika'
+      }
+    }
+  }
+};
+```
+
+---
+
+## 🚚 Supported Transports (v1)
+
+| Transport | Status |
+| :--- | :--- |
+| SMTP | ✅ Supported |
+| SES | ⏳ Planned |
+| Mailgun | ⏳ Planned |
+| SendGrid | ⏳ Planned |
+
+---
+
+## 📚 API Reference
+
+### `Mail.to(address)`
+
+Set the recipient email address.
+
+```ts
+Mail.to('user@example.com')
+```
+
+### `subject(text)`
+
+Set the email subject.
+
+```ts
+.subject('Welcome')
+```
+
+### `text(content)`
+
+Set plain text email content.
+
+```ts
+.text('Plain text email')
+```
+
+### `view(name, data)`
+
+Render an email template.
+
+```ts
+.view('emails.reset', { token })
+```
+
+### `attach(path)`
+
+Attach a file from storage.
+
+```ts
+.attach('reports/file.pdf')
+```
+
+### `send(mailable?)`
+
+Send the email.
+
+```ts
+await Mail.to('user@example.com').send();
+```
+
+or with a Mailable:
+
+```ts
+await Mail.to(user.email).send(new WelcomeMail(user));
+```
+
+---
+
+## 🧠 Architecture
+
+```
+mail/
+├── src/
+│   ├── MailManager.ts      ← Resolves mailers
+│   ├── Mailer.ts           ← Sends messages
+│   ├── Message.ts          ← Email message builder
+│   ├── Mailable.ts         ← Base class for emails
+│   ├── Transport/
+│   │   └── SmtpTransport.ts
+│   ├── Contracts/
+│   │   └── Transport.ts
+│   └── index.ts
+├── tests/
+│   └── Mail.test.ts
+├── package.json
+├── tsconfig.json
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 🔌 Extending Mail (Custom Transports)
+
+Create a custom transport:
+
+```ts
+import { Transport } from '@arikajs/mail';
+
+class CustomTransport implements Transport {
+  async send(message: any): Promise<void> {
+    // Implementation
+  }
+}
+```
+
+Register it with `MailManager`.
+
+---
+
+## 🔗 Integration with ArikaJS
+
+`@arikajs/mail` integrates with:
+
+- **`@arikajs/view`** → Email templates
+- **`@arikajs/storage`** → Attachments
+- **`@arikajs/queue`** → Async email delivery
+- **`@arikajs/config`** → Mailer configuration
+
+---
+
+## 🧪 Testing
+
+Mailables and transports can be mocked for testing.
+A log or array transport will be added for test environments.
+
+---
+
+## 🛣 Roadmap
+
+- [ ] Queue-based sending
+- [ ] Markdown email support
+- [ ] Multiple recipients (CC/BCC)
+- [ ] Mail previews
+- [ ] Retry & failure handling
+
+---
+
+## 📄 License
+
+`@arikajs/mail` is open-source software licensed under the **MIT License**.
+
+---
+
+## 🧭 Philosophy
+
+> "Send emails, not headaches."
