@@ -1,6 +1,8 @@
 
 import { Mailer, ViewRenderer } from './Mailer';
 import { SmtpTransport } from './Transport/SmtpTransport';
+import { LogTransport } from './Transport/LogTransport';
+import { ArrayTransport } from './Transport/ArrayTransport';
 
 export class MailManager {
     private mailers: Map<string, Mailer> = new Map();
@@ -39,6 +41,12 @@ export class MailManager {
             switch (config.transport) {
                 case 'smtp':
                     transport = new SmtpTransport(config);
+                    break;
+                case 'log':
+                    transport = new LogTransport();
+                    break;
+                case 'array':
+                    transport = new ArrayTransport();
                     break;
                 default:
                     throw new Error(`Unsupported transport driver [${config.transport}].`);

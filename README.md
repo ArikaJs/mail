@@ -108,22 +108,31 @@ Mail configuration is defined via the application config:
 
 ```ts
 export default {
-  default: 'smtp',
+  default: process.env.MAIL_MAILER || 'log',
 
   mailers: {
     smtp: {
       transport: 'smtp',
-      host: 'smtp.mailtrap.io',
-      port: 587,
-      username: 'user',
-      password: 'secret',
-      encryption: 'tls',
-      from: {
-        address: 'no-reply@example.com',
-        name: 'Arika'
-      }
-    }
-  }
+      host: process.env.MAIL_HOST || 'smtp.mailtrap.io',
+      port: Number(process.env.MAIL_PORT || 587),
+      username: process.env.MAIL_USERNAME,
+      password: process.env.MAIL_PASSWORD,
+      encryption: process.env.MAIL_ENCRYPTION || 'tls',
+    },
+
+    log: {
+      transport: 'log',
+    },
+
+    array: {
+      transport: 'array',
+    },
+  },
+
+  from: {
+    address: process.env.MAIL_FROM_ADDRESS || 'hello@example.com',
+    name: process.env.MAIL_FROM_NAME || 'Example',
+  },
 };
 ```
 
@@ -131,12 +140,14 @@ export default {
 
 ## 🚚 Supported Transports (v1)
 
-| Transport | Status |
-| :--- | :--- |
-| SMTP | ✅ Supported |
-| SES | ⏳ Planned |
-| Mailgun | ⏳ Planned |
-| SendGrid | ⏳ Planned |
+| Transport | Status | Description |
+| :--- | :--- | :--- |
+| **SMTP** | ✅ Supported | Standard SMTP delivery |
+| **Log** | ✅ Supported | Logs emails to console (for local dev) |
+| **Array** | ✅ Supported | Stores emails in memory (for testing) |
+| SES | ⏳ Planned | Amazon SES driver |
+| Mailgun | ⏳ Planned | Mailgun API driver |
+| SendGrid | ⏳ Planned | SendGrid API driver |
 
 ---
 
