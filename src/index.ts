@@ -7,6 +7,9 @@ export { Mailable } from './Mailable';
 export { Message, Attachment, Address } from './Message';
 export { Transport } from './Contracts/Transport';
 export { SmtpTransport } from './Transport/SmtpTransport';
+export { SesTransport } from './Transport/SesTransport';
+export { MailgunTransport } from './Transport/MailgunTransport';
+export { SendGridTransport } from './Transport/SendGridTransport';
 
 let mailManager: MailManager;
 

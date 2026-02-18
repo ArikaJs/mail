@@ -145,9 +145,9 @@ export default {
 | **SMTP** | ✅ Supported | Standard SMTP delivery |
 | **Log** | ✅ Supported | Logs emails to console (for local dev) |
 | **Array** | ✅ Supported | Stores emails in memory (for testing) |
-| SES | ⏳ Planned | Amazon SES driver |
-| Mailgun | ⏳ Planned | Mailgun API driver |
-| SendGrid | ⏳ Planned | SendGrid API driver |
+| SES | ✅ Supported | Amazon SES driver |
+| Mailgun | ✅ Supported | Mailgun API driver |
+| SendGrid | ✅ Supported | SendGrid API driver |
 
 ---
 

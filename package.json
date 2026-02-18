@@ -1,6 +1,6 @@
 {
     "name": "@arikajs/mail",
-    "version": "0.1.0",
+    "version": "0.1.4",
     "description": "Email delivery system for the ArikaJS framework.",
     "license": "MIT",
     "main": "dist/index.js",
@@ -10,7 +10,7 @@
         "build:tests": "tsc -p tsconfig.test.json",
         "clean": "rm -rf dist",
         "prepare": "echo skip",
-        "test": "npm run build && npm run build:tests && node scripts/fix-test-imports.js && node --test 'dist/tests/**/*.test.js'",
+        "test": "npm run build && npm run build:tests && node --test 'dist/tests/**/*.test.js'",
         "test:watch": "npm run build && npm run build:tests && node --test --watch 'dist/tests/**/*.test.js'"
     },
     "files": [
@@ -38,7 +38,10 @@
     },
     "homepage": "https://github.com/arikajs/mail#readme",
     "dependencies": {
-        "nodemailer": "^6.9.8"
+        "@aws-sdk/client-ses": "^3.992.0",
+        "nodemailer": "^6.9.8",
+        "nodemailer-mailgun-transport": "^2.1.5",
+        "nodemailer-sendgrid-transport": "^0.2.0"
     },
     "devDependencies": {
         "@types/node": "^20.11.24",

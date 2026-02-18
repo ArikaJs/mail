@@ -42,6 +42,18 @@ export class MailManager {
                 case 'smtp':
                     transport = new SmtpTransport(config);
                     break;
+                case 'ses':
+                    const { SesTransport } = require('./Transport/SesTransport');
+                    transport = new SesTransport(config);
+                    break;
+                case 'mailgun':
+                    const { MailgunTransport } = require('./Transport/MailgunTransport');
+                    transport = new MailgunTransport(config);
+                    break;
+                case 'sendgrid':
+                    const { SendGridTransport } = require('./Transport/SendGridTransport');
+                    transport = new SendGridTransport(config);
+                    break;
                 case 'log':
                     transport = new LogTransport();
                     break;
