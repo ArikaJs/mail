@@ -1,20 +1,31 @@
 
 import { Transport } from '../Contracts/Transport';
-import nodemailer, { Transporter } from 'nodemailer';
-const sgTransport = require('nodemailer-sendgrid-transport');
+import * as sgMail from '@sendgrid/mail';
 
 export class SendGridTransport implements Transport {
-    protected transporter: Transporter;
-
     constructor(config: any) {
-        this.transporter = nodemailer.createTransport(sgTransport({
-            auth: {
-                api_key: config.key,
-            },
-        }));
+        sgMail.setApiKey(config.key);
     }
 
     async send(message: any): Promise<void> {
-        return await this.transporter.sendMail(message);
+        const payload = {
+            to: message.to,
+            cc: message.cc,
+            bcc: message.bcc,
+            from: message.from,
+            replyTo: message.replyTo,
+            subject: message.subject,
+            text: message.text,
+            html: message.html,
+            attachments: message.attachments?.map((attachment: any) => ({
+                content: attachment.content?.toString('base64'),
+                filename: attachment.filename,
+                type: attachment.contentType,
+                disposition: 'attachment',
+                contentId: attachment.cid
+            }))
+        };
+
+        await (sgMail as any).send(payload);
     }
 }
