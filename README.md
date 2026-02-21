@@ -15,8 +15,9 @@ This package allows applications to send emails without coupling to a specific t
 - **Class-based Mailables**: Reusable email classes
 - **Templated emails**: Using `@arikajs/view` for rendering
 - **Attachments**: Via `@arikajs/storage` integration
+- **Multiple Recipients**: Full support for `to`, `cc`, and `bcc`
+- **Queue-ready**: Native async delivery via `@arikajs/queue`
 - **Plain text & HTML emails**: Support for both formats
-- **Queue-ready architecture**: Designed for async delivery
 - **TypeScript-first**: Full type safety with JavaScript support
 
 ---
@@ -87,9 +88,15 @@ export class WelcomeMail extends Mailable {
 await Mail.to(user.email).send(new WelcomeMail(user));
 ```
 
+**Queuing a mailable:**
+
+```ts
+await Mail.to(user.email).queue(new WelcomeMail(user));
+```
+
 ---
 
-## 📎 Attachments
+### Attachments
 
 Attach files using Arika Storage:
 
@@ -98,6 +105,50 @@ await Mail.to('user@example.com')
   .subject('Invoice')
   .attach('invoices/2024.pdf')
   .send();
+```
+
+**From raw data (Buffer):**
+
+```ts
+const buffer = await generatePdf(data);
+
+await Mail.to('user@example.com')
+  .attachData(buffer, 'invoice.pdf')
+  .send();
+```
+
+**From streams:**
+
+```ts
+const stream = getDynamicReportStream();
+
+await Mail.to('user@example.com')
+  .attachStream(stream, 'report.csv')
+  .send();
+```
+
+### Multiple Recipients
+
+```ts
+await Mail.to('user@example.com')
+  .cc(['manager@example.com', 'admin@example.com'])
+  .bcc('audit@example.com')
+  .subject('Notification')
+  .send();
+```
+
+### Queued Delivery
+
+Arika Mail integrates with `@arikajs/queue` for background processing.
+
+```ts
+import { Queue } from '@arikajs/queue';
+
+// Configure queue on the mail system
+Mail.setQueue(queueManager);
+
+// Dispatch to background
+await Mail.to('user@example.com').queue(new WelcomeMail(user));
 ```
 
 ---
@@ -159,6 +210,14 @@ Set the recipient email address.
 
 ```ts
 Mail.to('user@example.com')
+```
+
+### `replyTo(address)`
+
+Set the Reply-To address.
+
+```ts
+.replyTo('support@example.com')
 ```
 
 ### `subject(text)`

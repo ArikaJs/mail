@@ -1,8 +1,7 @@
-
 export interface Attachment {
     filename?: string;
     path?: string;
-    content?: string | Buffer;
+    content?: any; // String, Buffer, or Stream
     contentType?: string;
     cid?: string;
     encoding?: string;
@@ -81,6 +80,22 @@ export class Message {
     attach(attachment: Attachment) {
         this._attachments.push(attachment);
         return this;
+    }
+
+    attachData(data: Buffer | string, filename: string, options: Partial<Attachment> = {}) {
+        return this.attach({
+            ...options,
+            content: data,
+            filename
+        });
+    }
+
+    attachStream(stream: any, filename: string, options: Partial<Attachment> = {}) {
+        return this.attach({
+            ...options,
+            content: stream,
+            filename
+        });
     }
 
     getPayload() {

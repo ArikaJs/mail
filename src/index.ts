@@ -18,6 +18,13 @@ export class Mail {
         mailManager = manager;
     }
 
+    static setQueue(queue: any) {
+        if (!mailManager) {
+            throw new Error('Mail system not configured. Please use Mail.setManager() to configure.');
+        }
+        mailManager.setQueue(queue);
+    }
+
     static extend(driver: string, callback: (config: any) => any) {
         if (!mailManager) {
             throw new Error('Mail system not configured. Please use Mail.setManager() to configure.');
@@ -30,6 +37,20 @@ export class Mail {
             throw new Error('Mail system not configured. Please use Mail.setManager() to configure.');
         }
         return mailManager.to(users);
+    }
+
+    static cc(users: any) {
+        if (!mailManager) {
+            throw new Error('Mail system not configured. Please use Mail.setManager() to configure.');
+        }
+        return mailManager.mailer().cc(users);
+    }
+
+    static bcc(users: any) {
+        if (!mailManager) {
+            throw new Error('Mail system not configured. Please use Mail.setManager() to configure.');
+        }
+        return mailManager.mailer().bcc(users);
     }
 
     static mailer(name?: string) {

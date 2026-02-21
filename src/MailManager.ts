@@ -8,8 +8,18 @@ export class MailManager {
     private mailers: Map<string, Mailer> = new Map();
 
     private customCreators: Map<string, (config: any) => any> = new Map();
+    private queue: any;
 
     constructor(private config: any, private viewRenderer?: ViewRenderer) { }
+
+    public setQueue(queue: any) {
+        this.queue = queue;
+        return this;
+    }
+
+    public getQueue() {
+        return this.queue;
+    }
 
     public extend(driver: string, callback: (config: any) => any) {
         this.customCreators.set(driver, callback);
@@ -65,7 +75,7 @@ export class MailManager {
             }
         }
 
-        return new Mailer(name, transport, this.viewRenderer);
+        return new Mailer(name, transport, this.viewRenderer, this);
     }
 
     public to(users: any) {
