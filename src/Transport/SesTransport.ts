@@ -1,4 +1,3 @@
-
 import { Transport } from '../Contracts/Transport';
 import nodemailer, { Transporter } from 'nodemailer';
 import { SES, SendRawEmailCommand } from '@aws-sdk/client-ses';
