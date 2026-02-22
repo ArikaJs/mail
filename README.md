@@ -2,7 +2,7 @@
 
 `@arikajs/mail` is the email delivery system for the ArikaJS framework.
 
-It provides a driver-based, configurable mailer with support for templated emails, attachments, and queue-ready delivery — inspired by Laravel Mail but built natively for Node.js and TypeScript.
+It provides a driver-based, configurable mailer with support for templated emails, attachments, and queue-ready delivery — with a beautiful, expressive API but built natively for Node.js and TypeScript.
 
 This package allows applications to send emails without coupling to a specific transport.
 
@@ -337,6 +337,33 @@ A log or array transport will be added for test environments.
 - [ ] Retry & failure handling
 
 ---
+
+## 🏗 Architecture
+
+```text
+mail/
+├── src/
+│   ├── Contracts
+│   │   └── Transport.ts
+│   ├── Jobs
+│   │   └── SendQueuedMailable.ts
+│   ├── Transport
+│   │   ├── ArrayTransport.ts
+│   │   ├── LogTransport.ts
+│   │   ├── MailgunTransport.ts
+│   │   ├── SendGridTransport.ts
+│   │   ├── SesTransport.ts
+│   │   └── SmtpTransport.ts
+│   ├── index.ts
+│   ├── Mailable.ts
+│   ├── Mailer.ts
+│   ├── MailManager.ts
+│   └── Message.ts
+├── tests/
+├── package.json
+├── tsconfig.json
+└── README.md
+```
 
 ## 📄 License
 
