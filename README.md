@@ -268,26 +268,31 @@ await Mail.to(user.email).send(new WelcomeMail(user));
 
 ---
 
-## 🧠 Architecture
+## 🏗 Architecture
 
-```
+```text
 mail/
 ├── src/
-│   ├── MailManager.ts      ← Resolves mailers
-│   ├── Mailer.ts           ← Sends messages
-│   ├── Message.ts          ← Email message builder
-│   ├── Mailable.ts         ← Base class for emails
-│   ├── Transport/
-│   │   └── SmtpTransport.ts
-│   ├── Contracts/
+│   ├── Contracts
 │   │   └── Transport.ts
-│   └── index.ts
+│   ├── Jobs
+│   │   └── SendQueuedMailable.ts
+│   ├── Transport
+│   │   ├── ArrayTransport.ts
+│   │   ├── LogTransport.ts
+│   │   ├── MailgunTransport.ts
+│   │   ├── SendGridTransport.ts
+│   │   ├── SesTransport.ts
+│   │   └── SmtpTransport.ts
+│   ├── index.ts
+│   ├── Mailable.ts
+│   ├── Mailer.ts
+│   ├── MailManager.ts
+│   └── Message.ts
 ├── tests/
-│   └── Mail.test.ts
 ├── package.json
 ├── tsconfig.json
-├── README.md
-└── LICENSE
+└── README.md
 ```
 
 ---
@@ -337,33 +342,6 @@ A log or array transport will be added for test environments.
 - [ ] Retry & failure handling
 
 ---
-
-## 🏗 Architecture
-
-```text
-mail/
-├── src/
-│   ├── Contracts
-│   │   └── Transport.ts
-│   ├── Jobs
-│   │   └── SendQueuedMailable.ts
-│   ├── Transport
-│   │   ├── ArrayTransport.ts
-│   │   ├── LogTransport.ts
-│   │   ├── MailgunTransport.ts
-│   │   ├── SendGridTransport.ts
-│   │   ├── SesTransport.ts
-│   │   └── SmtpTransport.ts
-│   ├── index.ts
-│   ├── Mailable.ts
-│   ├── Mailer.ts
-│   ├── MailManager.ts
-│   └── Message.ts
-├── tests/
-├── package.json
-├── tsconfig.json
-└── README.md
-```
 
 ## 📄 License
 
